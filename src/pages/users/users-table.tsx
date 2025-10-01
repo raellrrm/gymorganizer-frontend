@@ -1,12 +1,17 @@
 
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { getUsers } from "@/api/get-users";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { UserPaymentStatus } from "@/components/user-payment-status";
+import { useQuery } from "@tanstack/react-query";
 
 import { DollarSign, InfoIcon } from "lucide-react";
 
 export const UsersTable = () => {
 
-
+    const {data: usuarios} = useQuery({
+        queryKey: ['users'],
+        queryFn: getUsers
+    });
 
     return (
         <div className="max-h-[550px] overflow-y-auto">
@@ -22,13 +27,13 @@ export const UsersTable = () => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {Array.from({ length: 9 }).map((_, index) => (
-                        <TableRow key={index}>
-                            <TableCell className="font-medium">2</TableCell>
-                            <TableCell>Usuario</TableCell>
-                            <TableCell>Sobrenome</TableCell>
+                    {usuarios?.map(usuario => (
+                        <TableRow key={usuario.id}>
+                            <TableCell className="font-medium">{usuario.id}</TableCell>
+                            <TableCell>{usuario.nome}</TableCell>
+                            <TableCell>{usuario.sobrenome}</TableCell>
                             <TableCell className="text-right">
-                                <UserPaymentStatus status="ATIVO" />
+                                <UserPaymentStatus status={usuario.statusAluno} />
                             </TableCell>
                             <TableCell className="">
                                 <button className="rounded-full bg-amber-500 inline-block p-2 hover:opacity-80 cursor-pointer">
