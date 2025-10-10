@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios"
 
-type getUsersResponse = {
+export type getUserResponse = {
     id: 1,
     nome: string,
     sobrenome: string,
@@ -18,6 +18,6 @@ type getUsersResponse = {
 }
 
 export const getUsers = async () => {
-    const response = await api.get<getUsersResponse[]>("/usuarios");
+    const response = await api.get<getUserResponse[]>("/usuarios");
     return response.data;
 }
