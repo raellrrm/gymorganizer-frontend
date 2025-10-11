@@ -21,7 +21,7 @@ const EditUserSchema = z.object({
     nome: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
     sobrenome: z.string().min(2, "O sobrenome deve ter pelo menos 2 caracteres."),
     email: z.string().email("E-mail inválido."),
-    telefone: z.string().min(8, "Telefone inválido."),
+    telefone: z.string().min(15, "Telefone inválido."),
 });
 
 type EditUserForm = z.infer<typeof EditUserSchema>;
@@ -78,6 +78,7 @@ export const EditUser = ({ userId }: EditUserProps) => {
                 ...data,
             });
             toast.success("Usuário atualizado com sucesso!");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             const message = error.response?.data?.detail;
             const status = error.response?.status;
