@@ -60,7 +60,7 @@ export const AddUser = ({ onClose }: AddUserProps) => {
 
   // Envia os dados do formulário para a API
   const handleAddUser = async (data: AddUserForm) => {
-    data.cpf = data.cpf.replace(/[^0-9]/g, ""); // Remove a máscara do CPF
+    data.cpf = data.cpf.replace(/[^0-9]/g, ""); 
 
     try {
       await addUserFn({ ...data });

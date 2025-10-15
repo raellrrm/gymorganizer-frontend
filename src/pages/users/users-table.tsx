@@ -5,9 +5,6 @@ import { getUsers } from "@/api/get-users";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -16,12 +13,19 @@ import { UserPaymentStatus } from "@/components/user-payment-status";
 import { DollarSign, Edit, Trash } from "lucide-react";
 import { EditUser } from "./edit-user";
 import { DeleteUser } from "./delete-user";
+import { useSearchParams } from "react-router";
 
 export const UsersTable = () => {
+
+     const [searchParams, setSearchParams] = useSearchParams();
+    
+        const cpf = searchParams.get('cpf');
+        const status = searchParams.get('status');
+
     // Busca todos os usuários
     const { data: usuarios } = useQuery({
-        queryKey: ["users"],
-        queryFn: getUsers,
+        queryKey: ["users", cpf, status],
+        queryFn: () => getUsers({cpf,status: status === 'todos' ? null : status}),
     });
 
     // Controla o estado de abertura do modal de exclusão
@@ -36,7 +40,7 @@ export const UsersTable = () => {
                         <TableHead>Nome</TableHead>
                         <TableHead>Sobrenome</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead>Pagar</TableHead>
+                        <TableHead className="text-center">Info/Pagamentos</TableHead>
                         <TableHead className="text-center">Editar</TableHead>
                         <TableHead className="text-center">Excluir</TableHead>
                     </TableRow>
@@ -52,9 +56,9 @@ export const UsersTable = () => {
                                 <UserPaymentStatus status={usuario.statusAluno} />
                             </TableCell>
 
-                            <TableCell>
+                            <TableCell className="text-center">
                                 <button
-                                    className="rounded-full bg-amber-500 p-2 hover:opacity-80 transition"
+                                    className="rounded-full cursor-pointer bg-amber-500 p-2 hover:opacity-80 transition"
                                     title="Efetuar pagamento"
                                 >
                                     <DollarSign size={14} className="text-white" />

@@ -1,5 +1,10 @@
 import { api } from "@/lib/axios"
 
+type getUsersQuery = {
+    cpf: string | null;
+    status: string | null;
+}
+
 export type getUserResponse = {
     id: 1,
     nome: string,
@@ -17,7 +22,12 @@ export type getUserResponse = {
     dataVencimento: string
 }
 
-export const getUsers = async () => {
-    const response = await api.get<getUserResponse[]>("/usuarios");
+export const getUsers = async ({cpf, status}: getUsersQuery) => {
+    const response = await api.get<getUserResponse[]>("/usuarios", {
+        params: {
+            cpf,
+            status
+        }
+    });
     return response.data;
 }
