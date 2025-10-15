@@ -1,7 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { User2Icon } from "lucide-react"
 
-export const CardActiveUsers = () => {
+type ActiveUsersProps = {
+    totalUsuariosAtivos: number | undefined;
+}
+
+export const CardActiveUsers = ({ totalUsuariosAtivos }: ActiveUsersProps) => {
     return (
         <Card>
             <CardHeader className="flex justify-between">
@@ -10,7 +14,7 @@ export const CardActiveUsers = () => {
             </CardHeader>
             <CardContent className="flex items-center">
                 <span className="h-3 w-3 rounded-full bg-green-500"></span>
-                <span className="font-medium ml-4 text-2xl md:text-3xl">300</span>
+                <span className="font-medium ml-4 text-2xl md:text-3xl">{totalUsuariosAtivos}</span>
             </CardContent>
         </Card>
     )
