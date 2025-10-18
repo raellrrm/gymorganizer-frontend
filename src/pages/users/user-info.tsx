@@ -13,9 +13,10 @@ import { ChangePlan } from "./change-plan";
 
 type UserInfoProps = {
     userId: number;
+    openInfo: boolean;
 };
 
-export const UserInfo = ({ userId }: UserInfoProps) => {
+export const UserInfo = ({ userId, openInfo }: UserInfoProps) => {
 
     const [open, setOpen] = useState(false);
 
@@ -23,6 +24,7 @@ export const UserInfo = ({ userId }: UserInfoProps) => {
     const { data: user } = useQuery({
         queryKey: ["user", userId],
         queryFn: () => getUser({ userId }),
+        enabled: openInfo
     });
 
     // Mutação para registrar o pagamento do usuário
@@ -43,6 +45,7 @@ export const UserInfo = ({ userId }: UserInfoProps) => {
         try {
             await registerPaymentFn({ userId });
             toast.success("Pagamento registrado com sucesso!");
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             // Tratamento de erro com mensagens personalizadas
             const message = error.response?.data?.detail;

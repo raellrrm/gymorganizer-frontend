@@ -15,6 +15,7 @@ import { IMaskInput } from "react-imask";
 
 type EditUserProps = {
     userId: number;
+    open: boolean;
 };
 
 const EditUserSchema = z.object({
@@ -26,12 +27,12 @@ const EditUserSchema = z.object({
 
 type EditUserForm = z.infer<typeof EditUserSchema>;
 
-export const EditUser = ({ userId }: EditUserProps) => {
+export const EditUser = ({ userId, open }: EditUserProps) => {
     // Busca os dados do usuário
     const { data: user } = useQuery({
         queryKey: ["user", userId],
         queryFn: () => getUser({ userId }),
-        enabled: !!userId,
+        enabled: open,
     });
 
     // Atualiza o usuário

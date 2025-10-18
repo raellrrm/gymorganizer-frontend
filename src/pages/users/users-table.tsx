@@ -28,9 +28,9 @@ export const UsersTable = () => {
         queryKey: ["users", cpf, status],
         queryFn: () => getUsers({ cpf, status: status === 'todos' ? null : status }),
     });
-
-    // Controla o estado de abertura do modal de exclusão
-    const [open, setOpen] = useState(false);
+    const [openUserId, setOpenUserId] = useState<number | null>(null);
+    const [openEditId, setOpenEditId] = useState<number | null>(null);
+    const [openDeleteId, setOpenDeleteId] = useState<number | null>(null);
 
     return (
         <div className="max-h-[550px] overflow-y-auto border rounded-xl shadow-sm">
@@ -58,38 +58,51 @@ export const UsersTable = () => {
                             </TableCell>
 
                             <TableCell className="text-center">
-                                <Dialog>
+                                <Dialog
+                                    open={openUserId === usuario.id}
+                                    onOpenChange={(isOpen) => setOpenUserId(isOpen ? usuario.id : null)}
+                                >
                                     <DialogTrigger asChild>
                                         <button
                                             className="rounded-full cursor-pointer bg-amber-500 p-2 hover:opacity-80 transition"
-                                            title="Efetuar pagamento"
+                                            title="Ver informações"
                                         >
                                             <DollarSign size={14} className="text-white" />
                                         </button>
                                     </DialogTrigger>
-                                    <UserInfo userId={usuario.id}/>
+                                    {openUserId === usuario.id && (
+                                        <UserInfo userId={usuario.id} openInfo={openUserId === usuario.id} />
+                                    )}
                                 </Dialog>
                             </TableCell>
 
                             <TableCell className="text-center">
-                                <Dialog>
+                                <Dialog
+                                    open={openEditId === usuario.id}
+                                    onOpenChange={(isOpen) => setOpenEditId(isOpen ? usuario.id : null)}
+                                >
                                     <DialogTrigger asChild>
                                         <button title="Editar usuário">
                                             <Edit className="text-emerald-500 hover:text-emerald-300 transition" />
                                         </button>
                                     </DialogTrigger>
-                                    <EditUser userId={usuario.id} />
+                                    {openEditId === usuario.id && <EditUser userId={usuario.id} open={true} />}
                                 </Dialog>
                             </TableCell>
 
                             <TableCell className="text-center">
-                                <Dialog open={open} onOpenChange={setOpen}>
+                                <Dialog
+                                    open={openDeleteId === usuario.id}
+                                    onOpenChange={(isOpen) => setOpenDeleteId(isOpen ? usuario.id : null)}
+                                >
                                     <DialogTrigger asChild>
                                         <button title="Excluir usuário">
                                             <Trash className="text-rose-600 hover:text-rose-400 transition" />
                                         </button>
                                     </DialogTrigger>
-                                    <DeleteUser userId={usuario.id} onClose={() => setOpen(false)} />
+                                    {openDeleteId === usuario.id && (
+                                        <DeleteUser userId={usuario.id} onClose={() => setOpenDeleteId(null)} />
+                                    )}
                                 </Dialog>
                             </TableCell>
                         </TableRow>
