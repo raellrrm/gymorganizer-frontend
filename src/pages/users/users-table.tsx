@@ -14,18 +14,19 @@ import { DollarSign, Edit, Trash } from "lucide-react";
 import { EditUser } from "./edit-user";
 import { DeleteUser } from "./delete-user";
 import { useSearchParams } from "react-router";
+import { UserInfo } from "./user-info";
 
 export const UsersTable = () => {
 
-     const [searchParams, setSearchParams] = useSearchParams();
-    
-        const cpf = searchParams.get('cpf');
-        const status = searchParams.get('status');
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const cpf = searchParams.get('cpf');
+    const status = searchParams.get('status');
 
     // Busca todos os usuários
     const { data: usuarios } = useQuery({
         queryKey: ["users", cpf, status],
-        queryFn: () => getUsers({cpf,status: status === 'todos' ? null : status}),
+        queryFn: () => getUsers({ cpf, status: status === 'todos' ? null : status }),
     });
 
     // Controla o estado de abertura do modal de exclusão
@@ -57,12 +58,17 @@ export const UsersTable = () => {
                             </TableCell>
 
                             <TableCell className="text-center">
-                                <button
-                                    className="rounded-full cursor-pointer bg-amber-500 p-2 hover:opacity-80 transition"
-                                    title="Efetuar pagamento"
-                                >
-                                    <DollarSign size={14} className="text-white" />
-                                </button>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <button
+                                            className="rounded-full cursor-pointer bg-amber-500 p-2 hover:opacity-80 transition"
+                                            title="Efetuar pagamento"
+                                        >
+                                            <DollarSign size={14} className="text-white" />
+                                        </button>
+                                    </DialogTrigger>
+                                    <UserInfo userId={usuario.id}/>
+                                </Dialog>
                             </TableCell>
 
                             <TableCell className="text-center">

@@ -19,7 +19,8 @@ export type getUserResponse = {
         valor:number,
         duracaoEmDias: number
     },
-    dataVencimento: string
+    dataVencimento: string,
+    dataCriacao: string
 }
 
 export const getUsers = async ({cpf, status}: getUsersQuery) => {

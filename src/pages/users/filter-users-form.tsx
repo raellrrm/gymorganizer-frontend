@@ -67,7 +67,7 @@ export const FilterUsersForm = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit(handleFilterUsers)} className="space-y-4 flex md:flex-col gap-2" action="">
+        <form onSubmit={handleSubmit(handleFilterUsers)} className="space-y-4 flex flex-col gap-2" action="">
             <div className="space-y-1">
                 <Controller
                     name="cpf"
@@ -108,9 +108,9 @@ export const FilterUsersForm = () => {
                     )
                 }}
             />
-            <div className="space-y-2">
-                <Button type="submit" className="md:w-full cursor-pointer bg-foreground">Filtrar</Button>
-                <Button onClick={handleClearFilters} variant={"outline"} className="md:w-full cursor-pointer">Limpar filtros</Button>
+            <div className="grid grid-cols-2 gap-2 md:block md:space-y-2">
+                <Button type="submit" className="md:w-full cursor-pointer bg-foreground col-span-1">Filtrar</Button>
+                <Button onClick={handleClearFilters} variant={"outline"} className="md:w-full cursor-pointer  col-span-1">Limpar filtros</Button>
             </div>
         </form>
     );
