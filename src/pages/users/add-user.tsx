@@ -45,7 +45,7 @@ export const AddUser = ({ onClose }: AddUserProps) => {
     defaultValues: {
       cpf: "",
       telefone: "",
-      plano: "1", // Plano mensal selecionado por padrão
+      plano: "1", 
     },
   });
 
