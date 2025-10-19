@@ -19,11 +19,17 @@ type EditUserProps = {
 };
 
 const EditUserSchema = z.object({
-    nome: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
-    sobrenome: z.string().min(2, "O sobrenome deve ter pelo menos 2 caracteres."),
-    email: z.string().email("E-mail inválido."),
-    telefone: z.string().min(15, "Telefone inválido."),
+  nome: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
+  sobrenome: z.string().min(2, "O sobrenome deve ter pelo menos 2 caracteres."),
+  email: z.string().email("E-mail inválido."),
+  telefone: z
+    .string()
+    .refine(
+      (value) => value.replace(/\D/g, "").length === 11,
+      "Telefone inválido."
+    ),
 });
+
 
 type EditUserForm = z.infer<typeof EditUserSchema>;
 
@@ -79,7 +85,7 @@ export const EditUser = ({ userId, open }: EditUserProps) => {
                 ...data,
             });
             toast.success("Usuário atualizado com sucesso!");
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             const message = error.response?.data?.detail;
             const status = error.response?.status;
@@ -126,10 +132,16 @@ export const EditUser = ({ userId, open }: EditUserProps) => {
                                     {...field}
                                     mask="(00) 00000-0000"
                                     placeholder="(00) 00000-0000"
-                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 
-                             text-sm ring-offset-background placeholder:text-muted-foreground 
-                             focus-visible:outline-none focus-visible:ring-2 
-                             focus-visible:ring-ring focus-visible:ring-offset-2"
+                                    autoComplete="tel"
+                                    onBlur={(e) => {
+                                        const onlyNumbers = e.target.value.replace(/[^0-9]/g, "");
+                                        if (onlyNumbers.length === 11) {
+                                            field.onChange(onlyNumbers.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3"));
+                                        }
+                                    }}
+                                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm 
+  ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none 
+  focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                                 />
                             )}
                         />
