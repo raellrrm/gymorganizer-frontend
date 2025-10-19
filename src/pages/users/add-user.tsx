@@ -18,10 +18,14 @@ const AddUserSchema = z.object({
   nome: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
   sobrenome: z.string().min(2, "O sobrenome deve ter pelo menos 2 caracteres."),
   dataNascimento: z.string().min(1, "Data de nascimento inválida."),
+  // cpf: z
+  //   .string()
+  //   .min(14, "CPF inválido.")
+  //   .refine((value) => cpf.isValid(value), { message: "CPF inválido." }),
   cpf: z
     .string()
-    .min(14, "CPF inválido.")
-    .refine((value) => cpf.isValid(value), { message: "CPF inválido." }),
+    .transform((val) => (val ?? "").replace(/\D/g, "")) // transforma em só dígitos
+    .refine((digits) => digits.length === 11, { message: "CPF inválido." }),
   email: z.string().email("Email inválido."),
   telefone: z.string().min(15, "Telefone inválido."),
   plano: z.string(),
