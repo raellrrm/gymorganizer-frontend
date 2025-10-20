@@ -16,6 +16,7 @@ export const DeleteUser = ({ userId, onClose }: DeleteUserProps) => {
         onSuccess: () => {
             // Atualiza a lista de usuários em cache após a exclusão
             queryClient.invalidateQueries({ queryKey: ["users"] });
+            queryClient.invalidateQueries({queryKey: ["dashboard"]})
         },
     });
 

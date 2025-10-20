@@ -9,15 +9,11 @@ import { cpf } from "cpf-cnpj-validator";
 import { useSearchParams } from "react-router";
 
 const usersFilterSchema = z.object({
-    // cpf: z
-    //     .string()
-    //     .transform((val) => (val.trim() === "" ? undefined : val))
-    //     .optional()
-    //     .refine((value) => !value || cpf.isValid(value), { message: "CPF inválido." }),
     cpf: z
         .string()
-        .transform((val) => (val ?? "").replace(/\D/g, ""))
-        .refine((digits) => digits.length === 11, { message: "CPF inválido." }),
+        .transform((val) => (val.trim() === "" ? undefined : val))
+        .optional(),
+        // .refine((value) => !value || cpf.isValid(value), { message: "CPF inválido." }),
     status: z.string().optional()
 });
 

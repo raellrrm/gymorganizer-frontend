@@ -24,7 +24,7 @@ const AddUserSchema = z.object({
   //   .refine((value) => cpf.isValid(value), { message: "CPF inválido." }),
   cpf: z
     .string()
-    .transform((val) => (val ?? "").replace(/\D/g, "")) // transforma em só dígitos
+    .transform((val) => (val ?? "").replace(/\D/g, "")) 
     .refine((digits) => digits.length === 11, { message: "CPF inválido." }),
   email: z.string().email("Email inválido."),
   telefone: z.string().min(15, "Telefone inválido."),
@@ -57,6 +57,7 @@ export const AddUser = ({ onClose }: AddUserProps) => {
     mutationFn: addUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({queryKey: ["dashboard"]});
       reset();
       onClose();
     },
